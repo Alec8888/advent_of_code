@@ -162,3 +162,9 @@ cython_debug/
 #.idea/
 
 .vscode/
+
+# Ignore __pycache__ directories
+__pycache__/
+
+# Ignore virtual environment directory
+venv/
