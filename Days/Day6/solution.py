@@ -1,4 +1,4 @@
-from gridutils import detect_out_of_bounds, find_value, print_grid
+from gridutils import detect_out_of_bounds, find_value, print_grid, print_grid_with_indices
 import time
 
 start_time = time.time()
@@ -43,13 +43,14 @@ def guard_walks_part1(grid, start_pos, start_dir):
 
 example_path = r'C:\dev\AdventOfCode\Days\Day6\example.txt'
 input_path = r'C:\dev\AdventOfCode\Days\Day6\input.txt'
-grid = load_puzzle_input(example_path)
+grid = load_puzzle_input(input_path)
 
 directions = {'^', '<', '>', 'v'}
 guard_start_pos = find_value(grid, directions)
 guard_start_dir = grid[guard_start_pos[0]][guard_start_pos[1]]
 
-print_grid(grid)
+# print_grid(grid)
+print_grid_with_indices(grid)
 print(f'guard_start_pos: {guard_start_pos}')
 print(f'guard_start_dir: {guard_start_dir}')
 

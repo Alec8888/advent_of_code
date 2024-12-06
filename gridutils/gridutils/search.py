@@ -7,7 +7,7 @@ def find_value(grid, target_val):
     """
     if not isinstance(target_val, (set, list, tuple)): # if not an iterable, convert to set
         target_vals = {target_val}
-    else: # is an iterable so can use set() to conver tot set
+    else: # is an iterable so can use set() to convert to set
         target_vals = set(target_val)
 
     for i, row in enumerate(grid):
