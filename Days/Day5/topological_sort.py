@@ -4,7 +4,7 @@ example_path = r'C:\dev\AdventOfCode\Days\Day5\example.txt'
 input_path = r'C:\dev\AdventOfCode\Days\Day5\input.txt'
 
 # read input
-with open(input_path, "r") as file:
+with open(example_path, "r") as file:
     puzzle = file.read()
 
 sections = puzzle.strip().split("\n\n")
@@ -52,6 +52,7 @@ valid_sum = sum(update[len(update) // 2] for update in valid_updates)
 print(f'valid_sum: {valid_sum}')
 
 import networkx as nx
+import matplotlib.pyplot as plt
 corrected_updates = []
 for update in invalid_updates:  
     G = nx.DiGraph()
@@ -62,10 +63,21 @@ for update in invalid_updates:
         p1, p2 = rule
         if p1 in update and p2 in update:
             G.add_edge(p1, p2)
-    # G.add_edges_from(rules)
+
+    # Display Graph
+    pos = {node: (i, 0) for i, node in enumerate(update)} # horizontal layout
+    nx.draw(G, pos, with_labels=True)
+    plt.title("Invalid Update")
+    plt.show()
 
     sorted_update = list(nx.topological_sort(G))
     corrected_updates.append(sorted_update)
+
+    # Display Graph
+    pos = {node: (i, 0) for i, node in enumerate(sorted_update)} # horizontal layout
+    nx.draw(G, pos, with_labels=True)
+    plt.title("Corrected Update")
+    plt.show()
 
 corrected_sum = sum(update[len(update) // 2] for update in corrected_updates)
 
