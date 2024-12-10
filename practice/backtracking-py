@@ -1,0 +1,28 @@
+from typing import List
+import networkx as nx
+import mathplotlib.pyplot as plt
+
+def subsets(nums: List[int]) -> List[List[int]]:
+    subsets = []
+    subset = []
+    G = nx.DiGraph()
+    def backtrack(i):
+        if i >= len(nums):
+            subsets.append(subset.copy())
+            return
+
+        # decision to include nums[i]
+        subset.append(nums[i])
+        backtrack(i + 1)
+
+        # decision NOT to include nums[i]
+        subset.pop()
+        backtrack(i + 1)
+
+    backtrack(0)
+    return subsets
+
+num_list = [1, 2, 3]
+
+subset_list = subsets(num_list)
+print(f'subset_list: {subset_list}')
