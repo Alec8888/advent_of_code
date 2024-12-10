@@ -59,7 +59,7 @@ def build_graph(map, trailhead, G=None):
     tile_elevation = map[ti][tj]
     G.add_node((ti, tj), pos=(tj, -ti), value=tile_elevation)
     
-    tile_neighbors = get_neighbors_positions(puzzle, (ti, tj))
+    tile_neighbors = get_neighbors_positions(map, (ti, tj))
     reachable_tiles = get_neighbors_with_valid_slope(map, tile_neighbors, tile_elevation)
 
     for i, j in reachable_tiles:
@@ -80,13 +80,12 @@ def display_graph(graph):
     nx.draw(graph, pos, with_labels=True, labels=labels, node_size=500, node_color="lightblue", font_size=10)
     plt.show()
 
-def score_all_trailheads(trailheads, show_graph):
+def score_all_trailheads(trailheads, map):
     score_sum = 0
     for s in trailheads:
-        G = build_graph(puzzle, s)
+        G = build_graph(map, s)
 
-        if (show_graph): 
-            display_graph(G)
+        # display_graph(G)
 
         score = score_trail(G)
         # print(f's: {s}, score: {score}')
@@ -94,12 +93,12 @@ def score_all_trailheads(trailheads, show_graph):
 
     return score_sum
 
-def score_all_trailheads_part2(trailheads, show_graph):
+def score_all_trailheads_part2(trailheads, map):
     score_sum = 0
 
     for trailhead in trailheads:
-        trail = build_graph(puzzle, trailhead)
-        show_graph and display_graph(trail)
+        trail = build_graph(map, trailhead)
+        # display_graph(trail)
 
         d_nodes = [node for node in trail.nodes if trail.nodes[node]['value'] == 9]
 
@@ -116,39 +115,27 @@ def score_all_trailheads_part2(trailheads, show_graph):
 
     return score_sum
 
-example_path = r'.\Days\Day10\example.txt'
+def solve_part1(puzzle_input):
+    print(f'Solving Part 1...')
+    map = load_puzzle_input(puzzle_input)
+    # print_grid(map)
+    trailheads = find_value_all(map, 0)
+    solution = score_all_trailheads(trailheads, map)
+    print(f'solution 1: {solution}')
+    return solution
+
+def solve_part2(puzzle_input):
+    print(f'Solving Part 1...')
+    map = load_puzzle_input(puzzle_input)
+    # print_grid(map)
+    trailheads = find_value_all(map, 0)
+    solution = score_all_trailheads_part2(trailheads, map)
+    print(f'solution 2: {solution}')
+    return solution
+    
+
+example_input = r'.\Days\Day10\example.txt'
 puzzle_input = r'.\Days\Day10\input.txt'
 
-puzzle = load_puzzle_input(puzzle_input)
-# print(f'puzzle: {puzzle}')
-print_grid(puzzle)
-
-trailheads = find_value_all(puzzle, 0)
-print(f'trailheads: {trailheads}')
-
-show_graph = False
-# part 1
-solution = score_all_trailheads(trailheads, show_graph)
-print(f'solution1: {solution}')
-
-# part 2
-solution = score_all_trailheads_part2(trailheads, show_graph)
-print(f'solution2: {solution}')
-
-# debug stuff
-# neighbor_test = get_neighbors_positions(puzzle, (1, 1))
-# print(f'neighbor_test: {neighbor_test}')
-
-# valid_tiles = get_neighbors_with_valid_slop(puzzle, neighbor_test, puzzle[1][1])
-# print(f'valid_tiles: {valid_tiles}')
-
-# G = build_graph(puzzle, trailheads[0])
-# score = score_trail(G)
-# print(f'score: {score}')
-
-# pos = nx.get_node_attributes(G, 'pos')
-# labels = {node: G.nodes[node]['value'] for node in G.nodes()}
-# plt.figure(figsize=(8, 8))
-# nx.draw(G, pos, with_labels=True, labels=labels, node_size=500, node_color="lightblue", font_size=10)
-# plt.title(f"Trail Graph - Score: {score}", fontsize=16, fontweight="bold")
-# plt.show()
+solve_part1(puzzle_input)
+solve_part2(puzzle_input)
