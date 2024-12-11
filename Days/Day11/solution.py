@@ -1,12 +1,5 @@
 from collections import Counter
 
-def split_num_digits_in_half(n, digit_count):
-    half_digits = digit_count // 2
-    divisor = 10 ** half_digits
-    left = n // divisor
-    right = n % divisor
-    return left, right
-
 def blink(stones):
     new_stones = Counter()
 
@@ -15,10 +8,12 @@ def blink(stones):
             # 0 -> 1
             new_stones[1] += count
         else:
-            digits = len(str(stone))
+            str_stone = str(stone)
+            digits = len(str_stone)
             if digits % 2 == 0:
-                # Split
-                left, right = split_num_digits_in_half(stone, digits)
+                mid = digits // 2
+                left = int(str_stone[:mid])
+                right = int(str_stone[mid:])
                 new_stones[left] += count
                 new_stones[right] += count
             else:
