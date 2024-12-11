@@ -6,3 +6,6 @@ def test_part1_example():
 
 def test_part2_solution():
     assert solve_part2(r'.\Days\Day10\input.txt') == 1372
+
+if __name__ == "__main__":
+    pytest.main()
