@@ -38,22 +38,26 @@ def place_bots(grid, bots):
 
 def print_grid(grid):
     for row in grid:
-        print(row)
+        print(' '.join(map(str, row)))
 
 def simulate_bots(grid, bots):
     for i in range(100):
-        print(f'After 1 sec: ')
+        print(f'After {i + 1} sec: ')
         for bot in bots:
             x, y = bot[0]
             dx, dy = bot[1]
-            if y + dy >= len(grid):
-                new_y = (y + dy) - len(grid) 
-            else:
-                new_y = y + dy
-            if x + dx >= len(grid[0]):
-                new_x = (x + dx) - len(grid[0])
-            else:
-                new_x = x + dx
+            new_x = x + dx
+            new_y = y + dy
+
+            if new_y >= len(grid):
+                new_y = new_y - len(grid)
+            elif new_y < 0:
+                new_y = len(grid) + new_y
+
+            if new_x >= len(grid[0]):
+                new_x = new_x - len(grid[0])
+            elif new_x < 0:
+                new_x = len(grid[0]) + new_x
 
             grid[y][x] -= 1
             grid[new_y][new_x] += 1
@@ -61,14 +65,50 @@ def simulate_bots(grid, bots):
         # log bots and grid here
     return grid, bots
 
+def calc_safety_factor(grid):
+    x_mid = len(grid[0]) // 2
+    y_mid = len(grid) // 2
+    score = 0
+
+    # Q1
+    q1_bots = 0
+    for i in range(y_mid):
+        for j in range(x_mid):
+            q1_bots += grid[i][j]
+    
+    # Q2
+    q2_bots = 0
+    for i in range(y_mid):
+        for j in range(x_mid + 1, len(grid[0])):
+            q2_bots += grid[i][j]
+
+    # Q3
+    q3_bots = 0
+    for i in range(y_mid + 1):
+        for j in range(x_mid):
+            q3_bots += grid[i][j]
+    
+    # Q4
+    q4_bots = 0
+    for i in range(y_mid):
+        for j in range(x_mid + 1, len(grid[0])):
+            q4_bots += grid[i][j]
+
+    score = q1_bots * q2_bots * q3_bots * q4_bots
+
+    return score
+    
+
 path = r'.\Days\Day14\example.txt'
 bots = load_robots(path)
-
 grid = grid_build(7, 11)
-
 grid = place_bots(grid, bots)
+print_grid(grid)
 grid, bots = simulate_bots(grid, bots)
 print_grid(grid)
+
+safety_score = calc_safety_factor(grid)
+print(f'safety score: {safety_score}')
 
 # print_bot_info(bots)
 
